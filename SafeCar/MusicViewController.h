@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate>
+@interface MusicViewController : UIViewController <CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *speedometer;
 @property (weak, nonatomic) IBOutlet UILabel *mph;
@@ -23,9 +23,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *left3;
 @property (weak, nonatomic) IBOutlet UILabel *left4;
 @property (weak, nonatomic) IBOutlet UILabel *left5;
+@property (weak, nonatomic) IBOutlet UILabel *ArtistName;
+@property (weak, nonatomic) IBOutlet UILabel *SongName;
 
--(IBAction)change;
--(IBAction)change2;
+-(IBAction)back;
 
 @end
 

@@ -6,15 +6,18 @@
 //  Copyright (c) 2015 Matthew Chan. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MusicViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
 #import <CoreMotion/CoreMotion.h>
 
-@interface ViewController () {
+@interface MusicViewController () {
     CLLocationManager *locationManager;
+    MPMusicPlayerController *player;
     NSTimer *timer;
+    NSTimer *crashTimer;
+    NSTimer *resetTimer;
     double mySpeed;
     double oldSpeed;
-    NSTimer *crashTimer;
     CMMotionManager *motion;
     BOOL crash;
     CLLocationCoordinate2D location;
@@ -22,7 +25,7 @@
 
 @end
 
-@implementation ViewController
+@implementation MusicViewController
 
 - (void)viewDidLoad {
 
@@ -35,6 +38,11 @@
     
     self.speedometer.transform = CGAffineTransformMakeScale(-1.0, 1.0);
     self.mph.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    self.ArtistName.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    self.SongName.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    
+    player = [MPMusicPlayerController iPodMusicPlayer];
+    //[player beginGeneratingPlaybackNotifications];
     
     mySpeed = -10.0;
     oldSpeed = 0;
@@ -55,14 +63,14 @@
 - (void)viewDidAppear:(BOOL)animated {
     timer = [NSTimer scheduledTimerWithTimeInterval:1
                                              target:self
-                                           selector:@selector(updateAcceleration)
+                                           selector:@selector(updateScreen)
                                            userInfo:nil
                                             repeats:YES];
     crashTimer = [NSTimer scheduledTimerWithTimeInterval:0.01
-                                                  target:self
-                                                selector:@selector(detectCrash)
-                                                userInfo:nil
-                                                 repeats:YES];
+                                             target:self
+                                           selector:@selector(detectCrash)
+                                           userInfo:nil
+                                            repeats:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -73,9 +81,71 @@
     NSLog(@"Timer invalidated");
 }
 
-- (void)updateAcceleration {
+- (void)detectCrash {
+    //if (crash) {
+        if (fabs(motion.accelerometerData.acceleration.x) > 4 || fabs(motion.accelerometerData.acceleration.y) > 4 || fabs(motion.accelerometerData.acceleration.z) > 4) {
+            NSLog(@"Crash has occurred. ");
+            NSLog(@"Front G-Forces: %f, ", motion.accelerometerData.acceleration.x);
+            NSLog(@"Side G-Forces: %f, ", motion.accelerometerData.acceleration.y);
+            NSLog(@"Z-Axis G-Forces: %f, ", motion.accelerometerData.acceleration.z);
+            NSLog(@"Latitude: %f, ", location.latitude);
+            NSLog(@"Longitude: %f", location.longitude);
+            NSString *message = [NSString stringWithFormat:@"Crash has occurred! Front Gs: %f, Side Gs: %f, Z-Axis Gs: %f, Lat: %f, Long: %f", motion.accelerometerData.acceleration.x, motion.accelerometerData.acceleration.y, motion.accelerometerData.acceleration.z, location.latitude, location.longitude];
+            [self sendText:message];
+            self.speedometer.textColor = [UIColor redColor];
+            self.mph.textColor = [UIColor redColor];
+        }
+    //}
+}
+
+- (void)sendText:(NSString *)message {
+    // Common constants
+    NSString *kTwilioSID = @"AC5c1742afa7ddb9fd4dcfb309e2f5d75f";
+    NSString *kTwilioSecret = @"0cc402d42d7cc0a30d0771e813c994c0";
+    NSString *kFromNumber = @"+18562882845";
+    NSString *kToNumber = @"+15103866772";
+    //NSString *kToNumber = @"+12679797408";
+    NSString *kMessage = message;
+    
+    // Build request
+    NSString *urlString = [NSString stringWithFormat:@"https://%@:%@@api.twilio.com/2010-04-01/Accounts/%@/SMS/Messages", kTwilioSID, kTwilioSecret, kTwilioSID];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:url];
+    [request setHTTPMethod:@"POST"];
+    
+    // Set up the body
+    NSString *bodyString = [NSString stringWithFormat:@"From=%@&To=%@&Body=%@", kFromNumber, kToNumber, kMessage];
+    NSData *data = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    NSError *error;
+    NSURLResponse *response;
+    NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    // Handle the received data
+    if (error) {
+        NSLog(@"Error: %@", error);
+    } else {
+        NSString *receivedString = [[NSString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
+        NSLog(@"Request sent. %@", receivedString);
+    }
+}
+
+- (void)resetCrash {
+    crash = NO;
+}
+
+- (void)updateScreen {
     NSLog(@"Acceleration Updated");
     if (mySpeed > -5) {
+        if (oldSpeed-mySpeed>20) {
+            crash = YES;
+            crashTimer = [NSTimer scheduledTimerWithTimeInterval:2
+                                                          target:self
+                                                        selector:@selector(resetCrash)
+                                                        userInfo:nil
+                                                         repeats:YES];
+        }
         if ((mySpeed-oldSpeed)>5) {
             //Max acceleration
             self.right1.hidden = NO;
@@ -163,62 +233,17 @@
         self.left5.hidden = YES;
         //No acceleration
     }
-}
-
-- (void)detectCrash {
-    //if (crash) {
-    if (fabs(motion.accelerometerData.acceleration.x) > 4 || fabs(motion.accelerometerData.acceleration.y) > 4 || fabs(motion.accelerometerData.acceleration.z) > 4) {
-        NSLog(@"Crash has occurred. ");
-        NSLog(@"Front G-Forces: %f, ", motion.accelerometerData.acceleration.x);
-        NSLog(@"Side G-Forces: %f, ", motion.accelerometerData.acceleration.y);
-        NSLog(@"Z-Axis G-Forces: %f, ", motion.accelerometerData.acceleration.z);
-        NSLog(@"Latitude: %f, ", location.latitude);
-        NSLog(@"Longitude: %f", location.longitude);
-        NSString *message = [NSString stringWithFormat:@"Crash has occurred! Front Gs: %f, Side Gs: %f, Z-Axis Gs: %f, Lat: %f, Long: %f", motion.accelerometerData.acceleration.x, motion.accelerometerData.acceleration.y, motion.accelerometerData.acceleration.z, location.latitude, location.longitude];
-        [self sendText:message];
-        self.speedometer.textColor = [UIColor redColor];
-        self.mph.textColor = [UIColor redColor];
-    }
-    //}
-}
-
-- (void)sendText:(NSString *)message {
-    // Common constants
-    NSString *kTwilioSID = @"AC5c1742afa7ddb9fd4dcfb309e2f5d75f";
-    NSString *kTwilioSecret = @"0cc402d42d7cc0a30d0771e813c994c0";
-    NSString *kFromNumber = @"+18562882845";
-    NSString *kToNumber = @"+15103866772";
-    //NSString *kToNumber = @"+12679797408";
-    NSString *kMessage = message;
     
-    // Build request
-    NSString *urlString = [NSString stringWithFormat:@"https://%@:%@@api.twilio.com/2010-04-01/Accounts/%@/SMS/Messages", kTwilioSID, kTwilioSecret, kTwilioSID];
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:url];
-    [request setHTTPMethod:@"POST"];
+    //player = [MPMusicPlayerController systemMusicPlayer];
+    MPMediaItem *current = player.nowPlayingItem;
+    self.ArtistName.text = current.artist;
+    self.SongName.text = current.title;
     
-    // Set up the body
-    NSString *bodyString = [NSString stringWithFormat:@"From=%@&To=%@&Body=%@", kFromNumber, kToNumber, kMessage];
-    NSData *data = [bodyString dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    NSError *error;
-    NSURLResponse *response;
-    NSData *receivedData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    
-    // Handle the received data
-    if (error) {
-        NSLog(@"Error: %@", error);
-    } else {
-        NSString *receivedString = [[NSString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-        NSLog(@"Request sent. %@", receivedString);
-    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     
     NSLog(@"yo");
-    CLLocationCoordinate2D location;
     location.latitude = newLocation.coordinate.latitude;
     location.longitude = newLocation.coordinate.longitude;
     mySpeed = newLocation.speed * 2.23694;
@@ -235,14 +260,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-- (IBAction)change {
-    [self performSegueWithIdentifier:@"nextView" sender:nil];
-}
-
-
-- (IBAction)change2 {
-    [self performSegueWithIdentifier:@"thirdView" sender:nil];
+- (IBAction)back {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 @end

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F80420B71B9BDFB200D672A3 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F80420B61B9BDFB200D672A3 /* MapViewController.m */; };
+		F80420B91B9BE14200D672A3 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F80420B81B9BE14200D672A3 /* MapKit.framework */; };
+		F836EDA21B9B647D00552163 /* MusicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F836EDA11B9B647D00552163 /* MusicViewController.m */; };
+		F836EDA61B9B726400552163 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F836EDA51B9B726400552163 /* MediaPlayer.framework */; };
+		F836EDA81B9B726D00552163 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F836EDA71B9B726D00552163 /* AVFoundation.framework */; };
 		F848EB3C1B9AAF4300BA2F23 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F848EB3B1B9AAF4300BA2F23 /* main.m */; };
 		F848EB3F1B9AAF4300BA2F23 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F848EB3E1B9AAF4300BA2F23 /* AppDelegate.m */; };
 		F848EB421B9AAF4300BA2F23 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F848EB411B9AAF4300BA2F23 /* ViewController.m */; };
@@ -27,6 +32,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F80420B51B9BDFB200D672A3 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		F80420B61B9BDFB200D672A3 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		F80420B81B9BE14200D672A3 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		F836EDA01B9B647D00552163 /* MusicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicViewController.h; sourceTree = "<group>"; };
+		F836EDA11B9B647D00552163 /* MusicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicViewController.m; sourceTree = "<group>"; };
+		F836EDA31B9B725900552163 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F836EDA51B9B726400552163 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		F836EDA71B9B726D00552163 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F848EB361B9AAF4300BA2F23 /* SafeCar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SafeCar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F848EB3A1B9AAF4300BA2F23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F848EB3B1B9AAF4300BA2F23 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -47,6 +60,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F80420B91B9BE14200D672A3 /* MapKit.framework in Frameworks */,
+				F836EDA81B9B726D00552163 /* AVFoundation.framework in Frameworks */,
+				F836EDA61B9B726400552163 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +79,10 @@
 		F848EB2D1B9AAF4300BA2F23 = {
 			isa = PBXGroup;
 			children = (
+				F80420B81B9BE14200D672A3 /* MapKit.framework */,
+				F836EDA71B9B726D00552163 /* AVFoundation.framework */,
+				F836EDA51B9B726400552163 /* MediaPlayer.framework */,
+				F836EDA31B9B725900552163 /* CoreMedia.framework */,
 				F848EB381B9AAF4300BA2F23 /* SafeCar */,
 				F848EB521B9AAF4400BA2F23 /* SafeCarTests */,
 				F848EB371B9AAF4300BA2F23 /* Products */,
@@ -85,6 +105,10 @@
 				F848EB3E1B9AAF4300BA2F23 /* AppDelegate.m */,
 				F848EB401B9AAF4300BA2F23 /* ViewController.h */,
 				F848EB411B9AAF4300BA2F23 /* ViewController.m */,
+				F836EDA01B9B647D00552163 /* MusicViewController.h */,
+				F836EDA11B9B647D00552163 /* MusicViewController.m */,
+				F80420B51B9BDFB200D672A3 /* MapViewController.h */,
+				F80420B61B9BDFB200D672A3 /* MapViewController.m */,
 				F848EB431B9AAF4300BA2F23 /* Main.storyboard */,
 				F848EB461B9AAF4300BA2F23 /* Images.xcassets */,
 				F848EB481B9AAF4300BA2F23 /* LaunchScreen.xib */,
@@ -219,7 +243,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F836EDA21B9B647D00552163 /* MusicViewController.m in Sources */,
 				F848EB421B9AAF4300BA2F23 /* ViewController.m in Sources */,
+				F80420B71B9BDFB200D672A3 /* MapViewController.m in Sources */,
 				F848EB3F1B9AAF4300BA2F23 /* AppDelegate.m in Sources */,
 				F848EB3C1B9AAF4300BA2F23 /* main.m in Sources */,
 			);
@@ -344,8 +370,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SafeCar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -354,8 +382,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SafeCar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -412,6 +442,7 @@
 				F848EB5B1B9AAF4400BA2F23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F848EB5C1B9AAF4400BA2F23 /* Build configuration list for PBXNativeTarget "SafeCarTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +451,7 @@
 				F848EB5E1B9AAF4400BA2F23 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

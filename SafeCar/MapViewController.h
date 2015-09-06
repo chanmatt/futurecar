@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate>
+@interface MapViewController : UIViewController <CLLocationManagerDelegate,MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *speedometer;
 @property (weak, nonatomic) IBOutlet UILabel *mph;
@@ -23,9 +24,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *left3;
 @property (weak, nonatomic) IBOutlet UILabel *left4;
 @property (weak, nonatomic) IBOutlet UILabel *left5;
+@property (weak, nonatomic) IBOutlet UILabel *ArtistName;
+@property (weak, nonatomic) IBOutlet UILabel *SongName;
+@property (weak, nonatomic) IBOutlet MKMapView *theMap;
 
--(IBAction)change;
--(IBAction)change2;
+-(IBAction)back;
 
 @end
 
